@@ -1,0 +1,17 @@
+services:
+  app:
+    container_name: next-train-to-app
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      - ORIGIN=https://next-train-to.shmee.codes
+    networks:
+      - apps
+
+name: next-train-to
+
+networks:
+  apps:
+    external: true
