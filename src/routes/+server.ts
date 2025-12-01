@@ -38,5 +38,7 @@ export async function GET({request}: RequestEvent) {
 		
 	const latestService = _.minBy(fastTrainsNotDepartedYet, service => service.locationDetail.realtimeDeparture);
 
-	return json(timeStringToInt(latestService?.locationDetail.realtimeDeparture ?? "0000") - time);
+	const departure = latestService?.locationDetail.realtimeDeparture ?? "0000";
+
+	return json({timeTill: timeStringToInt(departure) - time, departure});
 }
