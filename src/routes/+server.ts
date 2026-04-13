@@ -52,7 +52,5 @@ export async function GET({request}: RequestEvent) {
 
 	const departure2 = secondLatestService?.locationDetail.realtimeDeparture ?? "0000";
 
-	console.log(departure, departure2, time, hours, minutes);
-
 	return json({timeTill: timeStringToInt(departure) - time, departure, timeTill2: timeStringToInt(departure2) - time, departure2});
 }
