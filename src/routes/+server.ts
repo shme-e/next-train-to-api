@@ -1,6 +1,7 @@
 import { error, json, type RequestEvent } from '@sveltejs/kit';
 import type { ServicesResponse } from '$lib/index';
 import _ from 'lodash';
+import dayjs from 'dayjs';
 
 function timeStringToInt(timeString: string) {
 	var hours = parseInt(timeString.substring(0, 2));
@@ -26,8 +27,8 @@ export async function GET({request}: RequestEvent) {
 
 	const now = new Date();
 
-	const hours = now.getHours();
-	const minutes = now.getMinutes();
+	const hours = dayjs().hour();
+	const minutes = dayjs().minute();
 
 	const time = hoursMinsToInt(hours, minutes);
 
