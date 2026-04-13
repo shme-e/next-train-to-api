@@ -2,9 +2,11 @@ import { error, json, type RequestEvent } from '@sveltejs/kit';
 import type { ServicesResponse } from '$lib/index';
 import _ from 'lodash';
 import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
 import dayjs from 'dayjs';
 
 dayjs.extend(utc);
+dayjs.extend(timezone);
 
 function timeStringToInt(timeString: string) {
 	var hours = parseInt(timeString.substring(0, 2));
@@ -28,8 +30,9 @@ export async function GET({request}: RequestEvent) {
 		}
 	}).then(res => res.json()) as any as ServicesResponse;
 
-	const hours = dayjs.utc().hour();
-	const minutes = dayjs.utc().minute();
+	const now = dayjs.utc().tz("Europe/London");
+	const hours = now.hour();
+	const minutes = now.minute();
 
 	const time = hoursMinsToInt(hours, minutes);
 
@@ -48,6 +51,8 @@ export async function GET({request}: RequestEvent) {
 	const departure = latestService?.locationDetail.realtimeDeparture ?? "0000";
 
 	const departure2 = secondLatestService?.locationDetail.realtimeDeparture ?? "0000";
+
+	console.log(departure, departure2, time, hours, minutes);
 
 	return json({timeTill: timeStringToInt(departure) - time, departure, timeTill2: timeStringToInt(departure2) - time, departure2});
 }
