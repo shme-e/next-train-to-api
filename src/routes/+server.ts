@@ -1,7 +1,10 @@
 import { error, json, type RequestEvent } from '@sveltejs/kit';
 import type { ServicesResponse } from '$lib/index';
 import _ from 'lodash';
+import utc from "dayjs/plugin/utc";
 import dayjs from 'dayjs';
+
+dayjs.extend(utc);
 
 function timeStringToInt(timeString: string) {
 	var hours = parseInt(timeString.substring(0, 2));
@@ -25,10 +28,8 @@ export async function GET({request}: RequestEvent) {
 		}
 	}).then(res => res.json()) as any as ServicesResponse;
 
-	const now = new Date();
-
-	const hours = dayjs().hour();
-	const minutes = dayjs().minute();
+	const hours = dayjs.utc().hour();
+	const minutes = dayjs.utc().minute();
 
 	const time = hoursMinsToInt(hours, minutes);
 
